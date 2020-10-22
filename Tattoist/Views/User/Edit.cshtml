@@ -1,0 +1,164 @@
+﻿@model TattoistDAL.Models.Entities.User
+
+
+
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="kt-portlet kt-portlet--tabs">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-toolbar">
+                <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#" role="tab">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                    <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                    <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero"></path>
+                                </g>
+                            </svg> Hesap
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="kt-portlet__body">
+            <div class="tab-content">
+                <div class="tab-pane active" id="kt_user_edit_tab_1" role="tabpanel">
+                    <div class="kt-form kt-form--label-right">
+                        <div class="kt-form__body">
+                            <div class="kt-section kt-section--first">
+                                <div class="kt-section__body">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.Id)
+
+                                    <div class="row">
+                                        <div class="col-lg-9 col-xl-6">
+                                            <h3 style="font-weight:bold" class="kt-section__title kt-section__title-sm kt-pull-left">Kullanıcı Bilgileri</h3>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Kullanıcı Tipi</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <select class="form-control" id="UserType" name="UserType">
+                                                @if (Model.UserType == 1)
+                                                {
+                                                    <option value="1">Admin Kullanıcısı</option>
+                                                    <option value="2">Designer Kullanıcısı</option>
+                                                    <option value="3">Tattoo Artisti Kullanıcısı</option>
+                                                    <option value="4">Diğer Kullanıcı</option>
+                                                }
+                                                else if (Model.UserType == 2)
+                                                {
+                                                    <option value="1">Admin Kullanıcısı</option>
+                                                    <option selected value="2">Designer Kullanıcısı</option>
+                                                    <option value="3">Tattoo Artisti Kullanıcısı</option>
+                                                    <option value="4">Diğer Kullanıcı</option>
+                                                }
+                                                else if (Model.UserType == 3)
+                                                {
+                                                    <option value="1">Admin Kullanıcısı</option>
+                                                    <option value="2">Designer Kullanıcısı</option>
+                                                    <option selected value="3">Tattoo Artisti Kullanıcısı</option>
+                                                    <option value="4">Diğer Kullanıcı</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="1">Admin Kullanıcısı</option>
+                                                    <option value="2">Designer Kullanıcısı</option>
+                                                    <option value="3">Tattoo Artisti Kullanıcısı</option>
+                                                    <option selected value="4">Diğer Kullanıcı</option>
+                                                }
+                                            </select>
+                                            <span class="form-text text-muted">Kullanıcı tipi seçmeyi unutmayınız.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">İsim Soyisim</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">İsim Soyisim</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Kullanıcı Adı</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label">Parola</label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group last row">
+                                        <div style="position:relative;" class="col-md-offset-2 col-md-10">
+                                            <button type="button" onclick='window.location.href = "@Url.Action("List", "User")"' class="btn btn-secondary"><i class="flaticon2-left-arrow-1"></i> Geri Dön</button>
+                                            <button type="button" id="baba" class="btn btn-primary "><i class="flaticon2-edit"></i> Gönder</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="~/assets/js/pages/custom/user/edit-user.js"></script>
+    <script src="~/assets/js/pages/crud/forms/validation/form-controls.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#baba").click(function () {
+                var user = {
+                    Id: $("#Id").val(),
+                    UserType: $("#UserType").val(),
+                    FullName: $("#FullName").val(),
+                    Email: $("#Email").val(),
+                    UserName: $("#UserName").val(),
+                    Password: $("#Password").val()
+                };
+                $.ajax({
+                    url: '/Ajax/AjaxEdit',
+                    type: 'POST',
+                    data: user,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response == 'success') {
+                            Swal.fire(
+                                'Başarılı',
+                                'Kullanıcı Güncellemesi Başarılı',
+                                'success'
+                            );
+                            setTimeout(function () { window.top.location = "/User/List" }, 2000);
+                        } else {
+                            Swal.fire(
+                                'Başarısız',
+                                'Kullanıcı Güncellemesi Başarısız',
+                                'error'
+                            );
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+}
+
+

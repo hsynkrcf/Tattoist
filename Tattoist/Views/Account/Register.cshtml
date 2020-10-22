@@ -1,0 +1,136 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Escalade Ink | Kayıt Ol</title>
+    <link rel="~/stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
+
+    <link href="~/assets/plugins/global/plugins.bundle.css" rel="stylesheet" />
+    <link href="~/assets/css/style.bundle.css" rel="stylesheet" />
+    <link href="~/assets/css/pages/login/login-1.css" rel="stylesheet" />
+    <link href="~/assets/css/notiflix.css" rel="stylesheet" />
+</head>
+<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+    <div class="kt-grid kt-grid--ver kt-grid--root">
+        <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v1" id="kt_login">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile">
+
+                <!--begin::Aside-->
+                <div class="kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside" style="background-color:black">
+                    <div class="kt-grid__item">
+                        <a href="#" class="kt-login__logo">
+                            <img alt="tattoistlogo" src="~/assets/media/bannermain.jpg" />
+                        </a>
+                    </div>
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver">
+                        <div class="kt-grid__item kt-grid__item--middle">
+                            <h3 class="kt-login__title">Escalade Ink'e Hoş Geldiniz!</h3>
+                            <h4 class="kt-login__subtitle">Kaliteli tattoo, tasarım ve yeni nesil çalışmalar.</h4>
+                        </div>
+                    </div>
+                    <div class="kt-grid__item">
+                        <div class="kt-login__info">
+                            <div class="kt-login__copyright col-md-5">
+                                &copy @DateTime.Now.Year Escalade Ink. <br /> Tüm Hakları Saklıdır.
+                            </div>
+                            <div class="kt-login__menu col-md-12">
+                                <a href="https://www.facebook.com/Escalade.Ink/" class="kt-link">Facebook</a>
+                                <a href="https://twitter.com/EscaladeInk" class="kt-link">Twitter</a>
+                                <a href="http://www.escaladeink.com/" class="kt-link">İletişim</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--begin::Aside-->
+                <!--begin::Content-->
+                <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper">
+
+
+                    <!--end::Head-->
+                    <!--begin::Body-->
+                    <div class="kt-login__body">
+
+                        <!--begin::Signin-->
+                        <div class="kt-login__form">
+                            <div class="kt-login__title">
+                                <h3>Kayıt Ol</h3>
+                                <div class="kt-login__desc">Hesap oluşturmak için bilgilerinizi giriniz.</div>
+                            </div>
+
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Ad Soyad" id="fullname">
+                            </div>
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Email" id="email" autocomplete="off">
+                            </div>
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Kullanıcı Adı" id="usernameregister">
+                            </div>
+                            <div class="input-group">
+                                <input class="form-control" type="password" placeholder="Parola" id="passwordregister">
+                            </div>
+                            <div class="input-group">
+                                <input class="form-control" type="password" placeholder="Parola Onayla" id="rpassword">
+                            </div>
+                            <div class="kt-login__actions">
+                                <button id="signup" class="btn btn-brand btn-elevate kt-login__btn-primary">Kayıt Ol</button>&nbsp;&nbsp;
+                                <a href="/Account/Login" id="kt_login_signup" class="btn btn-light btn-elevate kt-login__btn-secondary">Geri Dön</a>
+                            </div>
+
+                        </div>
+
+                        <!--end::Signin-->
+                    </div>
+
+                    <!--end::Body-->
+                </div>
+
+                <!--end::Content-->
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="~/assets/js/notiflix.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#signup").click(function () {
+
+                if ($("#passwordregister").val() == $("#rpassword").val()) {
+                    var user = {
+                        Fullname: $("#fullname").val(),
+                        Email: $("#email").val(),
+                        Username: $("#usernameregister").val(),
+                        Password: $("#passwordregister").val()
+                    };
+                    $.ajax({
+                        url: '/Ajax/Register',
+                        type: 'POST',
+                        data: user,
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response == 'success') {
+                                Notiflix.Notify.Success('Kayıt Başarılı...');
+                                Notiflix.Notify.Success('Giriş Sayfasına Yönlendiriliyorsunuz.');
+                                setTimeout(function () { location.href = "/Account/Login" }, 1000);   
+                            } else {
+                                Notiflix.Report.Failure('Kayıt Yapılamadı', 'Alanları kontrol ediniz.', 'Yeniden Dene');
+                            }
+                        }
+                    });
+                } else {
+                    Notiflix.Notify.Failure('Parola Uyuşmuyor, Kontrol Ediniz.');
+                }
+
+            });
+        });
+    </script>
+</body>
+</html>

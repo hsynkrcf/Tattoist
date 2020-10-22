@@ -1,0 +1,99 @@
+16.10.2020 17:49:00  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>99830327</id>
+  </order>
+</response>
+
+16.10.2020 17:49:00  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>99830329</id>
+  </order>
+</response>
+
+22.10.2020 21:38:01  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>100167092</id>
+  </order>
+</response>
+
+22.10.2020 21:49:00  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>100167501</id>
+  </order>
+</response>
+
+22.10.2020 22:02:01  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>100167985</id>
+  </order>
+</response>
+
+22.10.2020 22:12:00  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>100168402</id>
+  </order>
+</response>
+
+22.10.2020 22:22:00  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>100168788</id>
+  </order>
+</response>
+
+22.10.2020 22:32:01  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>100169168</id>
+  </order>
+</response>
+
+22.10.2020 22:42:00  ---->  <?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>
+    <code>200</code>
+    <message>İşlem başarılı</message>
+  </status>
+  <order>
+    <id>100169494</id>
+  </order>
+</response>
+

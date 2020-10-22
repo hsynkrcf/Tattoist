@@ -1,0 +1,36 @@
+﻿
+th {
+    color: white !important;
+    font-weight: bold !important;
+}
+
+div {
+    text-decoration: none;
+}
+
+.sag{
+    text-align:right;
+}
+.sol{
+    text-align:left;
+}
+
+.tableHead {
+    color: white;
+    background-color: black;
+    text-align:center;
+}
+
+.chart {
+    width: 100%;
+    min-height: 450px;
+}
+
+.chartRow {
+    margin: 0 !important;
+}
+
+#tabtab_filter{
+    display:inline;
+    float:right;
+}

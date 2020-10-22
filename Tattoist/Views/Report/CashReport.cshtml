@@ -1,0 +1,114 @@
+﻿@model TattoistDAL.Models.DTO.CashReportVM
+
+<div class="kt-container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="kt-portlet kt-portlet--last kt-portlet--head-lg kt-portlet--responsive-mobile" id="kt_page_portlet">
+                <form action="/Report/CashReport" method="post">
+
+                    <div class="kt-portlet__head kt-portlet__head--lg" style="">
+                        <div class="kt-portlet__head-label d-flex">
+                            <span class="kt-portlet__head-icon">
+                                <i class="kt-font-brand flaticon2-calendar-2"></i>
+                            </span>
+                            <h3 class="kt-portlet__head-title">
+                                Kasa Raporu
+                            </h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="col-md-6">
+                                <div class='input-group pull-right'>
+                                    <input id='reportrange' name="reportrange" type="text" class="form-control" readonly placeholder="Tarih Aralığını Seçiniz" />
+                                </div>
+                            </div>
+                            <a href="/Home/HomePage" class="btn btn-clean kt-margin-r-10">
+                                <i class="la la-arrow-left"></i>
+                                <span class="kt-hidden-mobile">Geri Dön</span>
+                            </a>
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-brand" id="baba"><i class="flaticon2-search"></i>Getir</button>
+                            </div>
+                        </div>
+
+                    </div><br />
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger justify-content-center" role="alert">
+                            <strong>HATA!</strong>&nbsp; @TempData["Error"]
+                        </div>
+                    }
+
+
+                </form>
+                @if (Model != null)
+                {
+                    <div style="text-align:center">
+                        <b >  Rapor Tarih Aralığı : @Model.ReportRange</b>
+                    </div>
+                    <table class="table table-hover  responsive no-wrap dataTable dtr-inline " id="table" aria-describedby="kt_table_1_info" style="width: 100%;">
+                        <tbody>
+                            <tr data-tt-id="NA" data-tt-level="1">
+                                <td>
+                                    <b>
+                                        Toplam :
+
+                                    </b>
+                                </td>
+                                <td>
+                                    <b>@string.Format("{0:N}", Model.Sum) TL </b>
+                                </td>
+                            </tr>
+                            <tr data-tt-id="SA" data-tt-parent-id="NA" data-tt-level="2">
+                                <td><b>Gelirler Toplamı :</b></td>
+                                <td>
+                                    <b>@string.Format("{0:N}", Model.IncomeSum) TL </b>
+                                </td>
+                            </tr>
+                            <tr data-tt-id="arg" data-tt-parent-id="SA">
+                                <td><b>Nakit : </b></td>
+                                <td>
+                                    <b>@string.Format("{0:N}", Model.Cash) TL </b>
+                                </td>
+                            </tr>
+                            <tr data-tt-id="arg2" data-tt-parent-id="SA">
+                                <td><b>Kredi Kartı :</b></td>
+                                <td>
+                                    <b>@string.Format("{0:N}", Model.CreditCard) TL </b>
+                                </td>
+                            </tr>
+                            <tr data-tt-id="arg3" data-tt-parent-id="SA">
+                                <td><b>Havale :</b></td>
+                                <td>
+                                    <b>@string.Format("{0:N}", Model.Remittance) TL</b>
+
+                                </td>
+                            </tr>
+                            <tr data-tt-id="MA" data-tt-parent-id="NA" data-tt-level="1">
+                                <td><b>Masraflar Toplamı :</b> </td>
+                                <td>
+                                    <b>@string.Format("{0:N}", Model.ExpenseSum) TL</b>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="http://culmat.github.io/jsTreeTable/treeTable.js"></script>
+    <script type="text/javascript">
+        com_github_culmat_jsTreeTable.register(this)
+
+        treeTable($('#table'))
+    </script>
+    <script src="~/assets/js/SiteJS.js"></script>
+}

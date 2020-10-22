@@ -1,0 +1,539 @@
+﻿@model TattoistDAL.Models.DTO.AppointmentViewModel
+
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="kt-portlet kt-portlet--last kt-portlet--head-lg kt-portlet--responsive-mobile" id="kt_page_portlet">
+                <div class="kt-portlet__head kt-portlet__head--lg" style="">
+                    <div class="kt-portlet__head-label d-flex">
+                        <span class="kt-portlet__head-icon">
+                            <i class="kt-font-brand flaticon2-calendar-2"></i>
+                        </span>
+                        <h3 class="kt-portlet__head-title">
+                            Randevu Oluştur
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <a style="display:none;" id="download" href="#" target="_blank" class="btn btn-success kt-margin-r-10">
+                            <i class="la la-arrow-down"></i>
+                            <span class="kt-hidden-mobile">Anlaşmayı İndir</span>
+                        </a>
+                        <a href="/Home/HomePage" class="btn btn-clean kt-margin-r-10">
+                            <i class="la la-arrow-left"></i>
+                            <span class="kt-hidden-mobile">Geri Dön</span>
+                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-brand" id="baba" value=""><i class="flaticon2-add"></i>Kaydet</button>
+                        </div>
+                    </div>
+                </div><br />
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger justify-content-center" role="alert">
+                        <strong>HATA!</strong>&nbsp; @ViewBag.Error
+                    </div>
+                }
+                <div class="row">
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <input type="file" class="filepond" name="filepond" multiple
+                               data-max-file-size="10MB" data-max-files="1">
+                    </div>
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <img id="my_image" src="../assets/unnamed.png" height="300" width="400" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Müşteri</b></p>
+                        @Html.DropDownList("customerCode", Model.Customers, new { @class = "choice form-control selectpicker", id = "customerCode", title = "Müşteri", required = "Lütfen Müşteri Seçiniz", data_live_search = "true" })
+                        <div class="input-group-append">
+                            <button class="choice btn btn-block btn-light" data-toggle="modal" data-target="#addNewCustomerModal">
+                                <i class="fas fa-user-plus"></i>&nbsp;Yeni Müşteri Oluştur
+                            </button>
+                        </div>
+                    </div>
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Randevu Tarihi</b></p>
+                        <div class="datepicker-switch">
+                            <input type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="appointmentDate" class="choice form-control" format="yyyy-MM-dd" required />
+                        </div>
+                        <span class="form-text text-muted">Randevunuzun Tarihini Seçiniz.</span>
+                    </div>
+                </div>
+                <div style="margin-top:15px" class="row">
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Telefon</b></p>
+                        <input id="phone" onkeypress="return OnlyNumber(event)" class="choice form-control" type="text" maxlength="11" placeholder="(555)-555-5555">
+                    </div>
+                </div>
+                <div style="margin-top:15px" class="row">
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Uygulama</b></p>
+                        <select id="worktype" class="choice custom-select form-control">
+                            <option selected="">Seçiniz</option>
+                            <option value="1">Tattoo</option>
+                            <option value="2">Piercing</option>
+                            <option value="3">Make Piercing</option>
+                        </select>
+                    </div>
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Verilen Depozito</b></p>
+                        <input id="deposite" class="choice form-control" type="text">
+                        <select id="depositetype" class="choice custom-select form-control">
+                            <option selected="">Ödeme Tipini Seçiniz</option>
+                            <option value="1">Nakit</option>
+                            <option value="2">Kredi Kartı</option>
+                            <option value="3">Havale</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-top:15px" class="row" id="kt_repeater_1">
+                    <div id="kt_repeater_1">
+                        <div style="margin-left:15px;margin-right:25px;" data-repeater-list="" class="col-lg-12">
+                            <div data-repeater-item="" class="form-group row align-items-center ">
+                                @if (HttpContext.Current.User.IsInRole("Tattoo"))
+                                {
+                                    <div class="col-md-3">
+                                        <div class="kt-form__group--inline">
+                                            <p><b>Ödeme Tutarı</b></p>
+                                            <input name="payment" class="form-control" type="text" placeholder="Tutar Giriniz" disabled>
+                                        </div>
+                                        <div class="d-md-none kt-margin-b-10"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="kt-form__group--inline">
+                                            <p><b>Ödeme Tarihi</b></p>
+                                            <div class="datepicker-switch">
+                                                <input type="date" name="paymentdate" class="form-control" format="yyyy-MM-dd" required disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="kt-form__group--inline">
+                                            <p><b>Ödeme Tipi</b></p>
+                                            <select name="paytype" class="custom-select form-control" disabled>
+                                                <option selected="">Ödeme Tipini Seçiniz</option>
+                                                <option value="1">Nakit</option>
+                                                <option value="2">Kredi Kartı</option>
+                                                <option value="3">Havale</option>
+                                            </select>
+                                            <div class="d-md-none kt-margin-b-10"></div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3">
+                                        <div class="kt-form__group--inline">
+                                            <p><b>Ödeme Tutarı</b></p>
+                                            <input name="payment" class="form-control" type="text" placeholder="Tutar Giriniz">
+                                        </div>
+                                        <div class="d-md-none kt-margin-b-10"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="kt-form__group--inline">
+                                            <p><b>Ödeme Tarihi</b></p>
+                                            <div class="datepicker-switch">
+                                                <input type="date" name="paymentdate" class="form-control" format="yyyy-MM-dd" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="kt-form__group--inline">
+                                            <p><b>Ödeme Tipi</b></p>
+                                            <select name="paytype" class="custom-select form-control">
+                                                <option selected="">Ödeme Tipini Seçiniz</option>
+                                                <option value="1">Nakit</option>
+                                                <option value="2">Kredi Kartı</option>
+                                                <option value="3">Havale</option>
+                                            </select>
+                                            <div class="d-md-none kt-margin-b-10"></div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-md-2">
+                                    <a href="javascript:;" data-repeater-delete="" class="choice btn-sm btn btn-label-danger btn-bold">
+                                        <i class="la la-trash-o"></i>
+                                        Sil
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="margin-left:15px;margin-top:15px" class="form-group form-group-last row">
+                        <div class="col-lg-6">
+                            <a href="javascript:;" data-repeater-create="" id="repAdd" class="choice btn btn-bold btn-sm btn-label-brand">
+                                <i class="la la-plus"></i> Ekle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:15px" class="row">
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Tattoo Artisti</b></p>
+                        @Html.DropDownList("tattooist", Model.Tattoist, "Seçiniz", new { @class = "choice form-control selectpicker", id = "tattooist", title = "Seçiniz", data_live_search = "true" })
+                        <span class="form-text text-muted">Kazanılacak Miktar : <b id="tatprice">0</b> ₺</span>
+
+                    </div>
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Piercing Artisti</b></p>
+                        @Html.DropDownList("piercingist", Model.Piercingist, "Seçiniz", new { @class = "choice form-control selectpicker", id = "piercingist", title = "Seçiniz", data_live_search = "true" })
+                        <span class="form-text text-muted">Kazanılacak Miktar : <b id="pierprice">0</b> ₺</span>
+
+                    </div>
+                </div>
+                <div style="margin-top:15px" class="row">
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Aracı</b></p>
+                        @Html.DropDownList("broker", Model.BrokerList, "Seçiniz", new { @class = "choice form-control selectpicker", id = "broker", title = "Seçiniz", data_live_search = "true" })
+                        <span class="form-text text-muted">Kazanılacak Miktar : <b id="brokprice">0</b> ₺</span>
+
+                    </div>
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Designer</b></p>
+                        @Html.DropDownList("designer", Model.DesignerList, "Seçiniz", new { @class = "choice form-control selectpicker", id = "designer", title = "Seçiniz", data_live_search = "true" })
+                        <span class="form-text text-muted">Kazanılacak Miktar : <b id="desiprice">0</b> ₺</span>
+
+                    </div>
+
+                </div>
+                <div style="margin-top:15px" class="row">
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Kapalı Mı?</b></p>
+                        <input class="choice" type="checkbox" id="isclosed" name="isclosed" data-toggle="switch" data-on-color="primary" data-on-text="Açık" data-off-color="default" data-off-text="Kapalı" checked />
+                    </div>
+                    <div style="margin-left:15px;" class="col-md-5">
+                        <p><b>Toplam Ödenecek Tutar</b></p>
+                        <input id="totalprice" class="choice form-control" type="number">
+                        <select id="pricetype" class="choice custom-select form-control">
+                            <option selected="">Ödeme Tipini Seçiniz</option>
+                            <option value="1">Nakit</option>
+                            <option value="2">Kredi Kartı</option>
+                            <option value="3">Havale</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top:15px" class="choice row">
+                    <div style="margin-left:15px;" class="col-md-12">
+                        <h2>Kalan Alacak Tutarı : <b id="reprice">0</b> ₺</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="addNewCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addNewCustomerModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewCustomerModalTitle">Yeni Müşteri</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label for="customerName" class="col-sm-3 col-form-label">Müşteri Adı*</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="customerName">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="customerphone" class="col-sm-3 col-form-label">Telefon</label>
+                    <div class="col-sm-9">
+                        <input type="text" onkeypress="return OnlyNumber(event)" class="form-control" id="customerphone" maxlength="11">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="customerbirth" class="col-sm-3 col-form-label">Doğum Tarihi</label>
+                    <div class="datepicker-switch">
+                        <input type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="customerbirth" class="form-control" format="yyyy-MM-dd" required />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-dark" id="btnSave" onclick="AppointmentSave()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/js/pages/crud/forms/widgets/bootstrap-switch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="~/assets/js/SiteJS.js"></script>
+    <script src="~/assets/js/pages/crud/forms/widgets/form-repeater.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script>
+        FilePond.registerPlugin(
+            // encodes the file as base64 data
+            FilePondPluginFileEncode,
+            // validates the size of the file
+            FilePondPluginFileValidateSize,
+            // corrects mobile image osrientation
+            FilePondPluginImageExifOrientation,
+            // previews dropped images
+            FilePondPluginImagePreview
+        );
+        // Select the file input and use create() to turn it into a pond
+        FilePond.create(document.querySelector('.filepond'));
+    </script>
+    <script>
+FilePond.setOptions({
+server: '@Url.Action("SaveFile", "Ajax")'
+});
+
+        $(document).ready(function () {
+            @if (HttpContext.Current.User.IsInRole("Tattoo"))
+{
+                <text>
+            $(".choice").each(function () {
+                $(this).prop('disabled', true);
+                $("[name='isclosed']").bootstrapSwitch('disabled', true);
+            });
+        </text>
+
+            }
+
+        });
+    </script>
+
+
+    <script>
+        $("[name='isclosed']").bootstrapSwitch();
+        $("#download").hide();
+
+        function AppointmentSave() {
+            const customer = {
+                CustomerName: $('#customerName').val(),
+                CustomerPhone: $('#customerphone').val(),
+                CustomerBirthday: $('#customerbirth').val()
+            }
+
+            if (customer.CustomerName != "" && customer.CustomerPhone != "" && customer.CustomerBirthday != "") {
+                $("#btnSave").prop('disabled', true);
+
+                fetch('/Ajax/CreateCustomer', {
+                    method: 'POST',
+                    body: JSON.stringify(customer),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(json => {
+                        $('#addNewCustomerModal').modal('toggle');
+                        Swal.fire(
+                            'Başarılı',
+                            'Müşteri Oluşturuldu',
+                            'success'
+                        );
+                        setTimeout(function () { window.location.href = "/Appointment/System" }, 1500);
+                    })
+            } else {
+                Notiflix.Notify.Failure("Zorunlu alanları doldurunuz!");
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tattooist').on('change', function (e) {
+                var sum = Number($('#totalprice').val());
+                var res1 = $(this).find("option:selected").text();
+                var value = res1.substring(res1.length - 2, res1.length);
+
+                $('#tatprice').html((sum / 100) * value);
+            });
+
+            $('#piercingist').on('change', function (e) {
+                var sum = Number($('#totalprice').val());
+                var res1 = $(this).find("option:selected").text();
+                var value = res1.substring(res1.length - 2, res1.length);
+
+                $('#pierprice').html((sum / 100) * value);
+            });
+            $('#broker').on('change', function (e) {
+                var sum = Number($('#totalprice').val());
+                var res1 = $(this).find("option:selected").text();
+                var value = res1.substring(res1.length - 2, res1.length);
+
+                $('#brokprice').html((sum / 100) * value);
+            });
+            $('#designer').on('change', function (e) {
+                var sum = Number($('#totalprice').val());
+                var res1 = $(this).find("option:selected").text();
+                var value = res1.substring(res1.length - 2, res1.length);
+
+                $('#desiprice').html((sum / 100) * value);
+            });
+
+            $("#deposite").change(function () {
+                var dep = Number($('#deposite').val());
+                var sum = Number($('#totalprice').val());
+                $('#reprice').html(sum - dep);
+            });
+
+            $("#totalprice").change(function () {
+                var dep = Number($('#deposite').val());
+                var sum = Number($('#totalprice').val());
+                $('#reprice').html(sum - dep);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var sPageURL = window.location.href;
+            var id = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
+            if (id.length == 36) {
+                $.ajax({
+                    url: '/Ajax/GetAppointment',
+                    type: 'GET',
+                    data: { jsonData: id },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response != null) {
+
+                            $("#my_image").attr("src", "../Images/" + response.HeaderId + ".jpg");
+                            $('#customerCode').val(response.Customer).change();
+                            $('#appointmentDate').val(response.AppointmentDate).change();
+                            $('#phone').val(response.Phone);
+                            $('#worktype option')
+                                .filter(function () { return $.trim($(this).text()) == response.WorkType; }).attr('selected', 'selected');
+                            $('#depositetype option')
+                                .filter(function () { return $.trim($(this).text()) == response.DepositeType; }).attr('selected', 'selected');
+                            $('#pricetype option')
+                                .filter(function () { return $.trim($(this).text()) == response.PriceType; }).attr('selected', 'selected');
+                            $('#deposite').val(response.DepositeAmount);
+                            $('#tattooist').val(response.TattooArtist).change();
+                            $('#piercingist').val(response.PiercingArtist).change();
+                            $('#broker').val(response.Broker).change();
+                            $('#designer').val(response.Designer).change();
+                            $('#totalprice').val(response.TotalPrice);
+                            if (response.IsClosed == true) {
+                                $("[name='isclosed']").bootstrapSwitch('state', true);
+                            }
+                            else {
+                                $("[name='isclosed']").bootstrapSwitch('state', false);
+                            }
+
+                            $('#baba').val(response.HeaderId);
+                            $("#download").attr("href", "/Report/Contract?id=" + response.HeaderId)
+                            $("#download").show();
+
+                            for (var i = 0; i < response.PaymentList.length; i++) {
+                                $("[name='[" + i + "][payment]']").val(response.PaymentList[i]);
+                                $("[name='[" + i + "][paymentdate]']").val(response.PaymentDateList[i]);
+                                $("[name='[" + i + "][paytype]']").val(response.PaymentTypeList[i]);
+
+                                if (i != response.PaymentList.length - 1) {
+                                    $('#repAdd').click();
+
+                                }
+                            }
+                            $('#tattooist').change();
+                            $('#piercingist').change();
+                            $('#broker').change();
+                            $('#designer').change();
+                            $('#deposite').change();
+                            $('#totalprice').change();
+                        }
+                    }
+                });
+            }
+
+
+            $("#baba").click(function () {
+                $("#baba").prop("disabled", true);
+                var isClosed = false;
+                if ($(".bootstrap-switch-on").val() == '') {
+                    isClosed = true;
+                }
+
+                var payment = [];
+                var paymentDate = [];
+                var paymentTypeList = [];
+                var i = 0;
+                while (true) {
+                    if ($("[name='[" + i + "][payment]']").val() != null) {
+                        payment.push(($("[name='[" + i + "][payment]']").val()));
+                        paymentDate.push(($("[name='[" + i + "][paymentdate]']").val()));
+                        paymentTypeList.push(($("[name='[" + i + "][paytype]']").val()));
+                        i++;
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                var appointment = {
+                    Customer: $("#customerCode").val(),
+                    AppointmentDate: $("#appointmentDate").val(),
+                    Phone: $("#phone").val(),
+                    WorkType: $("#worktype option:selected").text(),
+                    DepositeAmount: $("#deposite").val(),
+                    DepositeType: $("#depositetype option:selected").text(),
+                    PriceType: $("#pricetype option:selected").text(),
+                    TattooArtist: $("#tattooist").val(),
+                    PiercingArtist: $("#piercingist").val(),
+                    Broker: $("#broker").val(),
+                    Designer: $("#designer").val(),
+                    IsClosed: isClosed,
+                    PaymentList: payment,
+                    PaymentDateList: paymentDate,
+                    PaymentTypeList: paymentTypeList,
+                    TotalPrice: $("#totalprice").val(),
+                    HeaderId: $("#baba").val()
+                };
+
+                $.ajax({
+                    url: '/Ajax/SaveAppointment',
+                    type: 'POST',
+                    data: appointment,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.length == 36) {
+                            Swal.fire(
+                                'Başarılı',
+                                'Randevu Oluşturuldu - Word Dosyasını İndirmeyi Unutmayınız.',
+                                'success'
+                            );
+                            $("#download").attr("href", "/Report/Contract?id=" + response);
+                            $("#download").show();
+                        } else {
+                            Swal.fire(
+                                'Başarısız',
+                                'Randevu Oluşturulamadı',
+                                'error'
+                            );
+                        }
+                        location.href = "/Appointment/List";
+                    },
+                    error: function (jqXHR, exception) {
+                        $("#baba").prop("disabled", false);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+@section css{
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet">
+}
